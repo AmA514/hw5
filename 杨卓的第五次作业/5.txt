@@ -1,0 +1,463 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red160\green32\blue240;\red0\green0\blue255;\red160\green32\blue240;
+\red34\green139\blue34;}
+{\*\expandedcolortbl;;\csgenericrgb\c62745\c12549\c94118;\csgenericrgb\c0\c0\c100000;\csgenericrgb\c62745\c12549\c94118;
+\csgenericrgb\c13333\c54510\c13333;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs20 \cf0 %5.1\
+A = inputdlg(\cf2 'D0'\cf0 );
+\fs24 \
+
+\fs20 D0 = str2num(cell2mat(A));
+\fs24 \
+
+\fs20 i=imread(\cf2 'test2.tif'\cf0 );
+\fs24 \
+
+\fs20 Fourier=double(i);
+\fs24 \
+
+\fs20 Fourier=fft2(Fourier);
+\fs24 \
+
+\fs20 Fourier=fftshift(Fourier);
+\fs24 \
+
+\fs20 [p,q]=size(Fourier);
+\fs24 \
+
+\fs20 n=2;
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=1/(1+(D(u,v)/D0)^(2*n));
+\fs24 \
+
+\fs20       G(u,v)=H(u,v)*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 butterworth=ifftshift(G);
+\fs24 \
+
+\fs20 butterworth=ifft2(butterworth);
+\fs24 \
+
+\fs20 butterworth=uint8(real(butterworth));
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=exp(-D(u,v)^2/(2*D0^2));
+\fs24 \
+
+\fs20       G(u,v)=H(u,v)*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 gaussian=ifftshift(G);
+\fs24 \
+
+\fs20 gaussian=ifft2(gaussian);
+\fs24 \
+
+\fs20 gaussian=uint8(real(gaussian));
+\fs24 \
+
+\fs20 figure(1);
+\fs24 \
+
+\fs20 subplot(221)
+\fs24 \
+
+\fs20 imshow(i);
+\fs24 \
+
+\fs20 title(\cf2 'origin'\cf0 );
+\fs24 \
+
+\fs20 subplot(222)
+\fs24 \
+
+\fs20 imshow(butterworth);
+\fs24 \
+
+\fs20 title([\cf2 'butterworth D0='\cf0 ,num2str(D0)]);
+\fs24 \
+
+\fs20 subplot(223)
+\fs24 \
+
+\fs20 imshow(gaussian);
+\fs24 \
+
+\fs20 title([\cf2 'gaussian D0='\cf0 ,num2str(D0)]);\
+\
+
+\fs24 %5.2\
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 A = inputdlg(\cf4 'D0'\cf0 );
+\fs24 \
+
+\fs20 D0 = str2num(cell2mat(A));
+\fs24 \
+
+\fs20 i=imread(\cf4 'test4 copy.bmp'\cf0 );
+\fs24 \
+
+\fs20 Fourier=double(i);
+\fs24 \
+
+\fs20 Fourier=fft2(Fourier);
+\fs24 \
+
+\fs20 Fourier=fftshift(Fourier);
+\fs24 \
+
+\fs20 [p,q]=size(Fourier);
+\fs24 \
+
+\fs20 n=2;
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=1/(1+(D0/D(u,v))^(2*n));
+\fs24 \
+
+\fs20       G(u,v)=H(u,v)*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 butterworth=ifftshift(G);
+\fs24 \
+
+\fs20 butterworth=ifft2(butterworth);
+\fs24 \
+
+\fs20 butterworth=uint8(real(butterworth));
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=1-exp(-D(u,v)^2/(2*D0^2));
+\fs24 \
+
+\fs20       G(u,v)=H(u,v)*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 gaussian=ifftshift(G);
+\fs24 \
+
+\fs20 gaussian=ifft2(gaussian);
+\fs24 \
+
+\fs20 gaussian=uint8(real(gaussian));
+\fs24 \
+
+\fs20 figure(1);
+\fs24 \
+
+\fs20 subplot(221)
+\fs24 \
+
+\fs20 imshow(i);
+\fs24 \
+
+\fs20 title(\cf4 'origin'\cf0 );
+\fs24 \
+
+\fs20 subplot(222)
+\fs24 \
+
+\fs20 imshow(butterworth);
+\fs24 \
+
+\fs20 title([\cf4 'high butterworth D0='\cf0 ,num2str(D0)]);
+\fs24 \
+
+\fs20 subplot(223)
+\fs24 \
+
+\fs20 imshow(gaussian);
+\fs24 \
+
+\fs20 title([\cf4 'high gaussian D0='\cf0 ,num2str(D0)]);
+\fs24 \
+\
+%5.3\
+
+\fs20 i=imread(\cf4 'test4 copy.bmp'\cf0 );
+\fs24 \
+
+\fs20 f=double(i);
+\fs24 \
+
+\fs20 Fourier=fft2(f);
+\fs24 \
+
+\fs20 Fourier=fftshift(Fourier);
+\fs24 \
+
+\fs20 [p,q]=size(Fourier);
+\fs24 \
+
+\fs20 c=1;
+\fs24 \
+
+\fs20  
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=c*4*pi^2*D(u,v)^2;
+\fs24 \
+
+\fs20       G(u,v)=H(u,v)*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 g=ifftshift(G);
+\fs24 \
+
+\fs20 g=ifft2(g);
+\fs24 \
+
+\fs20 g=uint8(real(g));
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf5 %???
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 maxf2=max(max(real(g)));
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20         g1(u,v)=f(u,v)+g(u,v)/maxf2;
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 g1=uint8(real(g1));
+\fs24 \
+
+\fs20  
+\fs24 \
+
+\fs20 figure(1);
+\fs24 \
+
+\fs20 subplot(221)
+\fs24 \
+
+\fs20 imshow(i);
+\fs24 \
+
+\fs20 title(\cf4 'origin'\cf0 );
+\fs24 \
+
+\fs20 subplot(222)
+\fs24 \
+
+\fs20 imshow(g);
+\fs24 \
+
+\fs20 title(\cf4 'laplace'\cf0 )
+\fs24 \
+
+\fs20 subplot(223)
+\fs24 \
+
+\fs20 imshow(g1);
+\fs24 \
+
+\fs20 title(\cf4 'High laplace'\cf0 )
+\fs24 \
+
+\fs20 i=imread(\cf4 'test3_corrupt.pgm'\cf0 );
+\fs24 \
+
+\fs20 f=double(i);
+\fs24 \
+
+\fs20 Fourier=fft2(f);
+\fs24 \
+
+\fs20 Fourier=fftshift(Fourier);
+\fs24 \
+
+\fs20 [p,q]=size(Fourier);
+\fs24 \
+
+\fs20 k1=1;k2=1;D0=100;
+\fs24 \
+
+\fs20  
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 for\cf0  u=1:p
+\fs24 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0     \cf3 for\cf0  v=1:q
+\fs24 \
+
+\fs20       D(u,v)=sqrt((u-fix(p/2))^2+(v-fix(q/2))^2);
+\fs24 \
+
+\fs20       H(u,v)=1-exp(-D(u,v)^2/(2*D0^2));
+\fs24 \
+
+\fs20       G(u,v)=(k1+k2*H(u,v))*Fourier(u,v);
+\fs24 \
+
+\fs20     \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf3 end
+\fs24 \cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs20 \cf0 g=ifftshift(G);
+\fs24 \
+
+\fs20 g=ifft2(g);
+\fs24 \
+
+\fs20 g=uint8(real(g));
+\fs24 \
+
+\fs20 figure(2);
+\fs24 \
+
+\fs20 subplot(221)
+\fs24 \
+
+\fs20 imshow(i);
+\fs24 \
+
+\fs20 title(\cf4 'oirigin'\cf0 );
+\fs24 \
+
+\fs20 subplot(222)
+\fs24 \
+
+\fs20 imshow(g);
+\fs24 \
+
+\fs20 title(\cf4 'unmask'\cf0 )
+\fs24 \
+
+\fs20 subplot(223)
+\fs24 \
+
+\fs20 imshow(abs(225.*H./max(max(H))));
+\fs24 \
+
+\fs20 title(\cf4 'High unmask'\cf0 )
+\fs24 \
+}
